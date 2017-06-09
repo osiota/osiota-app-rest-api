@@ -48,5 +48,6 @@ exports.init = function(node, app_config, main, host_info) {
 	    console.log("Listening on port %s...", server.address().port);
 	});
 
+	return server;
 };
 
