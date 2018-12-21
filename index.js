@@ -10,7 +10,7 @@ exports.init = function(node, app_config, main, host_info) {
 	}
 
 	var app = express();
-	app.use (function(req, res, next) {
+	app.use(function(req, res, next) {
 		var data='';
 		req.setEncoding('utf8');
 		req.on('data', function(chunk) { 
@@ -24,23 +24,39 @@ exports.init = function(node, app_config, main, host_info) {
 	});
 
 	app.get('/*', function(req, res) {
+		var path = req.path;
+		try {
+			path = decodeURIComponent(path);
+		} catch(err) {
+			res.send("Exception: " + e.stack || e);
+			return;
+		}
+		console.log("get", path, main.node(path).value);
 		res.send(
 			JSON.stringify(
-				main.node(req.path)
+				main.node(path)
 			)
 		);
 	});
 	app.post('/*', function(req, res) {
+		var path = req.path;
+		try {
+			path = decodeURIComponent(path);
+		} catch(e) {
+			res.send("Exception: " + e.stack || e);
+			return;
+		}
+		console.log("post", path);
 		try {
 			var args = JSON.parse(req.body);
 			args.push(function(data) {
 				res.send(data);
 			});
-			var n = main.node(req.path);
+			var n = main.node(path);
 			console.log("rpc:", args);
 			n.rpc.apply(n, args);
 		} catch(e) {
-			res.send("Exception: "+e);
+			res.send("Exception: " + e.stack || e);
 		}
 	});
 
