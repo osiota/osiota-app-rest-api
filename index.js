@@ -49,7 +49,11 @@ exports.init = function(node, app_config, main, host_info) {
 		console.log("post", path);
 		try {
 			var args = JSON.parse(req.body);
-			args.push(function(data) {
+			args.push(function(err, data) {
+				if (err) {
+					res.send("Error: "+err + "\n" + data);
+					return;
+				}
 				res.send(data);
 			});
 			var n = main.node(path);
