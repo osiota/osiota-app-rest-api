@@ -40,15 +40,31 @@ exports.init = function(node, app_config, main, host_info) {
 	});
 	app.post('/*', function(req, res) {
 		var path = req.path;
+		var rpc_method = null;
 		try {
 			path = decodeURIComponent(path);
 		} catch(e) {
 			res.send("Exception: " + e.stack || e);
 			return;
 		}
+		var m = path.match(/^(.*?)\?(.*)$/);
+		if (m) {
+			path = m[1];
+			rpc_method = m[2];
+		}
 		console.log("post", path);
 		try {
 			var args = JSON.parse(req.body);
+			if (rpc_method) {
+				args = [rpc_method, args];
+			}
+			if (!Array.isArray(args)) {
+				return;
+			}
+			// Add request-object
+			if (args[0].match(/^req_/)) {
+				args.unshift(req);
+			}
 			args.push(function(err, data) {
 				if (err) {
 					res.send("Error: "+err + "\n" + data);
