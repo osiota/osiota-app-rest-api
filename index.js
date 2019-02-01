@@ -35,7 +35,7 @@ exports.init = function(node, app_config, main, host_info) {
 		res.send(
 			JSON.stringify(
 				main.node(path)
-			)
+			)+"\n"
 		);
 	});
 	app.post('/*', function(req, res) {
@@ -47,36 +47,37 @@ exports.init = function(node, app_config, main, host_info) {
 			res.send("Exception: " + e.stack || e);
 			return;
 		}
-		var m = path.match(/^(.*?)\?(.*)$/);
-		if (m) {
-			path = m[1];
-			rpc_method = m[2];
-		}
 		console.log("post", path);
+		if (req.query && typeof req.query.method === "string") {
+			rpc_method = req.query.method;
+		}
 		try {
 			var args = JSON.parse(req.body);
 			if (rpc_method) {
 				args = [rpc_method, args];
 			}
 			if (!Array.isArray(args)) {
-				return;
-			}
-			// Add request-object
-			if (args[0].match(/^req_/)) {
-				args.unshift(req);
+				throw new Error("argument is not an array.");
 			}
 			args.push(function(err, data) {
 				if (err) {
-					res.send("Error: "+err + "\n" + data);
-					return;
+					data = {
+						"error": err,
+						"data": data
+					};
 				}
-				res.send(data);
+				res.send(JSON.stringify(data)+"\n");
 			});
 			var n = main.node(path);
 			console.log("rpc:", args);
+			// Add request-object
+			if (args[0].match(/^req_/)) {
+				args.splice(1, 0, req);
+			}
 			n.rpc.apply(n, args);
 		} catch(e) {
-			res.send("Exception: " + e.stack || e);
+			var data = {"error": e.stack || e };
+			res.send(JSON.stringify(data)+"\n");
 		}
 	});
 
