@@ -8,12 +8,17 @@ exports.init = function(node, app_config, main, host_info) {
 	if (typeof app_config.server !== "number") {
 		app_config.server = 8081;
 	}
+	var base_path = "";
+	if (typeof app_config.base_path === "string") {
+		base_path = app_config.base_path.replace(/\/$/, '');
+	}
 
-	var app = express();
-	app.use(function(req, res, next) {
+	var router = express.Router();
+	// body parser:
+	router.use(function(req, res, next) {
 		var data='';
 		req.setEncoding('utf8');
-		req.on('data', function(chunk) { 
+		req.on('data', function(chunk) {
 			data += chunk;
 		});
 
@@ -23,31 +28,45 @@ exports.init = function(node, app_config, main, host_info) {
 		});
 	});
 
-	app.get('/*', function(req, res) {
+	router.get('/*', function(req, res) {
 		var path = req.path;
 		try {
 			path = decodeURIComponent(path);
 		} catch(err) {
+			res.status(400);
 			res.send("Exception: " + e.stack || e);
 			return;
 		}
-		console.log("get", path, main.node(path).value);
+		var n = main.node(path);
+		console.log("get", path, n.value);
+		if (!n.metadata) {
+			res.status(404);
+			res.send("Node not found.");
+			return;
+		}
+		res.set('Content-Type', 'application/json');
 		res.send(
-			JSON.stringify(
-				main.node(path)
-			)+"\n"
+			JSON.stringify(n)
+			+"\n"
 		);
 	});
-	app.post('/*', function(req, res) {
+	router.post('/*', function(req, res) {
 		var path = req.path;
 		var rpc_method = null;
 		try {
 			path = decodeURIComponent(path);
 		} catch(e) {
+			res.status(400);
 			res.send("Exception: " + e.stack || e);
 			return;
 		}
 		console.log("post", path);
+		var n = main.node(path);
+		if (!n.metadata) {
+			res.status(404);
+			res.send("Node not found.");
+			return;
+		}
 		if (req.query && typeof req.query.method === "string") {
 			rpc_method = req.query.method;
 		}
@@ -57,16 +76,22 @@ exports.init = function(node, app_config, main, host_info) {
 				args = [rpc_method, args];
 			}
 			if (!Array.isArray(args)) {
-				throw new Error("argument is not an array.");
+				res.status(400);
+				res.send("Argument is not an array");
+				return;
 			}
-			args.push(function(err, data) {
+			args.push(function(err) {
+				var args = Array.prototype.slice.call(
+					arguments, 1);
 				if (err) {
-					data = {
+					res.status(500);
+					args = {
 						"error": err,
-						"data": data
+						"data": args
 					};
 				}
-				res.send(JSON.stringify(data)+"\n");
+				res.set('Content-Type', 'application/json');
+				res.send(JSON.stringify(args)+"\n");
 			});
 			var n = main.node(path);
 			console.log("rpc:", args);
@@ -76,10 +101,15 @@ exports.init = function(node, app_config, main, host_info) {
 			}
 			n.rpc.apply(n, args);
 		} catch(e) {
+			res.status(422);
 			var data = {"error": e.stack || e };
+			res.set('Content-Type', 'application/json');
 			res.send(JSON.stringify(data)+"\n");
 		}
 	});
+
+	var app = express();
+	app.use(base_path, router);
 
 	var server = app.listen(app_config.server, function () {
 	    console.log("Listening on port %s...", server.address().port);

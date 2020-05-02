@@ -1,0 +1,122 @@
+swagger: "2.0"
+info:
+  description: "This is the osiota REST api documentation. You can find out more about osiota at [https://osiota.net/](https://osiota.net/)."
+  version: "1.0.0"
+  title: "osiota REST api"
+  license:
+    name: "MIT"
+    url: "https://github.com/osiota/osiota/blob/master/LICENSE"
+basePath: "/"
+tags:
+- name: "Node"
+  description: "Perform actions on nodes of osiota"
+schemes:
+- "https"
+- "http"
+paths:
+  /{node}:
+    get:
+      tags:
+      - "Node"
+      summary: "Get current value of the node"
+      description: ""
+      produces:
+      - "application/json"
+      parameters:
+      - name: "node"
+        in: "path"
+        description: "Name of the node"
+        required: true
+        type: "string"
+        examples:
+          One: "/test"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: '#/definitions/Node'
+          examples:
+            One:
+              value: 'Hello World!'
+              time: 1588419904.666
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Node not found"
+    post:
+      tags:
+      - "Node"
+      summary: "Call a RPC function of a node"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "node"
+        description: "Name of the node"
+        required: true
+        type: "string"
+        examples:
+          One: "/test"
+      - in: "query"
+        name: "method"
+        description: "RPC method to call"
+        required: true
+        type: "string"
+        examples:
+          One: "test"
+      - in: "body"
+        name: "arguments"
+        description: "Arguments to call"
+        required: true
+        type: "array"
+        items:
+          type: "any"
+        examples:
+          One:
+          - 1
+          - 2
+          - 3
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              type: "any"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Node not found"
+        "422":
+          description: "Unprocessable Entity"
+          schema:
+            $ref: '#/definitions/Error'
+        "500":
+          description: "Internal application error"
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Node:
+    type: "object"
+    properties:
+      value:
+        type: "any"
+        description: "Value of a Node"
+        example: "Hello World"
+      time:
+        type: "number"
+        description: "Unix timestamp of last alteration"
+        example: 1588419904.666
+  Error:
+    type: "object"
+    properties:
+      error:
+        type: "string"
+        description: "Error string"
+        example: "Method not found"
+      data:
+        type: "any"
+        description: "Addional information"

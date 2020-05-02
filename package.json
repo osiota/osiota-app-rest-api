@@ -6,6 +6,11 @@
   "dependencies": {
     "express": "^4.14.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "swagger-markdown": "^1.2.0"
+  },
+  "scripts": {
+    "docs": "swagger-markdown -i openapi.yaml -o OPENAPI.md"
+  },
   "author": "Simon Walz"
 }

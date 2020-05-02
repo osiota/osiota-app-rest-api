@@ -1,0 +1,13 @@
+{
+	"app": [{
+		"name": "rest-api",
+		"config": {
+			"server": 8081
+		}
+	},{
+		"name": "test-rest",
+		"config": {
+			"node": "/test"
+		}
+	}]
+}
