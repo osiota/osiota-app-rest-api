@@ -1,7 +1,7 @@
 {
-  "name": "er-app-rest-api",
+  "name": "osiota-app-rest-api",
   "version": "1.0.0",
-  "description": "REST-API for energy-router",
+  "description": "This application starts a seperate HTTP server to provide a REST api\n\nSee [OpenAPI definition](OPENAPI",
   "main": "index.js",
   "dependencies": {
     "express": "^4.14.0"
@@ -12,5 +12,6 @@
   "scripts": {
     "docs": "swagger-markdown -i openapi.yaml -o OPENAPI.md"
   },
-  "author": "Simon Walz"
+  "author": "Simon Walz and others",
+  "license": "MIT"
 }

@@ -1,17 +1,21 @@
 {
 	"type": "object",
-	"title": "REST api for osiota",
+	"title": "osiota application rest-api",
 	"description": "This application starts a seperate HTTP server to provide a REST api. With this REST api it is possible get the current state a node or to call a RPC function. As REST (without extention) does not provide the publish subscribe pattern, we recommend to **not** use this application. You could use multiple instances of osiota and connect them with WebSocket connections instead.\n\nSee [OpenAPI definition](OPENAPI.md)",
 	"properties": {
 		"server": {
 			"type": "number",
 			"title": "HTTP server port for the REST api",
-			"examples": [ "8081" ]
+			"examples": [
+				"8081"
+			]
 		},
 		"base_path": {
 			"type": "string",
 			"title": "Base path of the REST api",
-			"examples": [ "" ],
+			"examples": [
+				""
+			],
 			"default": ""
 		}
 	}
