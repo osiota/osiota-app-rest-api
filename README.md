@@ -17,7 +17,6 @@ See [OpenAPI definition](OPENAPI.md)
 |server|HTTP server port for the REST api<br/>|number|
 |base\_path|Base path of the REST api<br/><br/>Default: `""`|string|
 
-
 **Example**
 
 ```json
