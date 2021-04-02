@@ -7,8 +7,8 @@
     "express": "^4.14.0"
   },
   "devDependencies": {
-    "swagger-markdown": "^1.2.0",
-    "osiota-dev": "^1.x"
+    "osiota-dev": "^1.1.6",
+    "swagger-markdown": "^1.2.0"
   },
   "scripts": {
     "doc-openapi": "swagger-markdown -i openapi.yaml -o OPENAPI.md",
