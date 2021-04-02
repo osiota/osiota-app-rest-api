@@ -1,6 +1,6 @@
 {
   "name": "osiota-app-rest-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This application starts a seperate HTTP server to provide a REST api\n\nSee [OpenAPI definition](OPENAPI.md)",
   "main": "index.js",
   "dependencies": {
