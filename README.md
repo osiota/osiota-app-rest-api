@@ -14,7 +14,7 @@ Please edit schema.json or
 ## Configuration: rest-api
 
 
-This application starts a seperate HTTP server to provide a REST api. With this REST api it is possible get the current state a node or to call a RPC function. As REST (without extention) does not provide the publish subscribe pattern, we recommend to **not** use this application. You could use multiple instances of osiota and connect them with WebSocket connections instead.
+This application starts a seperate HTTP server to provide a REST api. With this REST api it is possible get the current state of a node or to call a RPC function. As REST (without extention) does not provide the publish subscribe pattern, we recommend to **not** use this application. You could use multiple instances of osiota and connect them with WebSocket connections instead.
 
 See [OpenAPI definition](OPENAPI.md)
 
@@ -22,8 +22,8 @@ See [OpenAPI definition](OPENAPI.md)
 
 |Name|Description|Type|
 |----|-----------|----|
-|server|HTTP server port for the REST api<br/>|number|
-|base\_path|Base path of the REST api<br/><br/>Default: `""`|string|
+|`server` (HTTP server port)||number|
+|`base_path` (Base path)|Server path where to attach the REST API.<br/>Default: `""`<br/>|string|
 
 **Example**
 
