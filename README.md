@@ -23,7 +23,7 @@ See [OpenAPI definition](OPENAPI.md)
 |Name|Type|Description|Required|
 |----|----|-----------|--------|
 |**server**<br/>(HTTP server port)|`number`||yes|
-|**base_path**|`string`|Server path where to attach the REST API.<br/>Default: `""`<br/>|no|
+|**base\_path**|`string`|Server path where to attach the REST API.<br/>Default: `""`<br/>|no|
 
 **Additional Properties:** not allowed<br/>
 **Example**
