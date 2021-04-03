@@ -19,5 +19,7 @@
 			],
 			"default": ""
 		}
-	}
+	},
+	"required": [ "server" ],
+	"additionalProperties": false
 }

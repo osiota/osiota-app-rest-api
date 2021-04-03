@@ -20,11 +20,12 @@ See [OpenAPI definition](OPENAPI.md)
 
 **Properties**
 
-|Name|Description|Type|
-|----|-----------|----|
-|`server` (HTTP server port)||number|
-|`base_path`|Server path where to attach the REST API.<br/>Default: `""`<br/>|string|
+|Name|Type|Description|Required|
+|----|----|-----------|--------|
+|**server**<br/>(HTTP server port)|`number`||yes|
+|**base_path**|`string`|Server path where to attach the REST API.<br/>Default: `""`<br/>|no|
 
+**Additional Properties:** not allowed<br/>
 **Example**
 
 ```json
