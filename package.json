@@ -4,7 +4,7 @@
   "description": "This application starts a seperate HTTP server to provide a REST api\n\nSee [OpenAPI definition](OPENAPI.md)",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.17.2"
   },
   "devDependencies": {
     "osiota-dev": "^1.2.3",
