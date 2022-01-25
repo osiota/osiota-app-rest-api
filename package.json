@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "osiota-dev": "^1.2.3",
-    "swagger-markdown": "^1.2.0"
+    "swagger-markdown": "^1.4.6"
   },
   "scripts": {
     "doc-openapi": "swagger-markdown -i openapi.yaml -o OPENAPI.md",
