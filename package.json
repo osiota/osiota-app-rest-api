@@ -7,7 +7,7 @@
     "express": "^4.17.3"
   },
   "devDependencies": {
-    "osiota-dev": "^1.2.3",
+    "osiota-dev": "^1.2.4",
     "swagger-markdown": "^1.4.6"
   },
   "scripts": {
