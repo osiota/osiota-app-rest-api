@@ -5,44 +5,43 @@ This is the osiota REST api documentation. You can find out more about osiota at
 
 **License:** [MIT](https://github.com/osiota/osiota/blob/master/LICENSE)
 
+## Node
+Perform actions on nodes of osiota
+
 ### /{node}
 
 #### GET
-##### Summary:
+##### Summary
 
 Get current value of the node
 
-##### Description:
-
-
+##### Description
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
+| ---- | ---------- | ----------- | -------- | ------ |
 | node | path | Name of the node | Yes | string |
 
 ##### Responses
 
 | Code | Description | Schema |
 | ---- | ----------- | ------ |
-| 200 | successful operation | [Node](#node) |
+| 200 | successful operation<br><br>**Example** (*One*):<br><pre>{<br>  "value": "Hello World!",<br>  "time": 1588419904.666<br>}</pre> | [Node](#node) |
 | 400 | Bad Request |  |
 | 404 | Node not found |  |
 
 #### POST
-##### Summary:
+##### Summary
 
 Call a RPC function of a node
 
-##### Description:
-
-
+##### Description
 
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
+| ---- | ---------- | ----------- | -------- | ------ |
 | node | path | Name of the node | Yes | string |
 | method | query | RPC method to call | Yes | string |
 | arguments | body | Arguments to call | Yes | [ any ] |
@@ -59,17 +58,16 @@ Call a RPC function of a node
 
 ### Models
 
-
 #### Node
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| value | any | Value of a Node | No |
-| time | number | Unix timestamp of last alteration | No |
+| value | any | Value of a Node<br>*Example:* `"Hello World"` | No |
+| time | number | Unix timestamp of last alteration<br>*Example:* `1588419904.666` | No |
 
 #### Error
 
 | Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| error | string | Error string | No |
+| error | string | Error string<br>*Example:* `"Method not found"` | No |
 | data | any | Addional information | No |
