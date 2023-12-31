@@ -43,8 +43,9 @@ Call a RPC function of a node
 | Name | Located in | Description | Required | Schema |
 | ---- | ---------- | ----------- | -------- | ------ |
 | node | path | Name of the node | Yes | string |
-| method | query | RPC method to call | Yes | string |
-| arguments | body | Arguments to call | Yes | [ any ] |
+| action | body | Action template to call | No | string |
+| method | body | RPC method to call | No | string |
+| arguments | body | Arguments to call | No | [ any ] |
 
 ##### Responses
 
