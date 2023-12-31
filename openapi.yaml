@@ -60,25 +60,31 @@ paths:
         type: "string"
         examples:
           One: "/test"
-      - in: "query"
-        name: "method"
-        description: "RPC method to call"
-        required: true
+      - in: "body"
+        name: "action"
+        description: "Action template to call"
+        required: false
         type: "string"
         examples:
-          One: "test"
+          One: "on"
+      - in: "body"
+        name: "method"
+        description: "RPC method to call"
+        required: false
+        type: "string"
+        examples:
+          One: "set"
       - in: "body"
         name: "arguments"
         description: "Arguments to call"
-        required: true
+        required: false
         type: "array"
         items:
           type: "any"
         examples:
           One:
-          - 1
-          - 2
-          - 3
+          - false
+          - 1234567
       responses:
         "200":
           description: "successful operation"
