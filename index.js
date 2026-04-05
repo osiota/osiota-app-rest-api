@@ -24,6 +24,41 @@ function map_action(action) {
 	return JSON.parse(JSON.stringify(actions[action]));
 }
 
+function action(node, body, res) {
+	let args = [];
+	if (typeof body.action === "string") {
+		args = map_action(body.action);
+	} else {
+		if (typeof body.method !== "string") {
+			throw new HTTPError(400, "Missing property action or method");
+		}
+		if (Array.isArray(body.arguments)) {
+			args = body.arguments;
+		}
+		args.unshift(body.method);
+	}
+	args.push(function(err) {
+		var data = Array.prototype.slice.call(
+			arguments, 1);
+		console.log("REST Answer", err, data);
+		if (err) {
+			res.status(500);
+			data = {
+				"error": err,
+				"data": data
+			};
+		}
+		res.set('Content-Type', 'application/json');
+		res.send(JSON.stringify(data)+"\n");
+	});
+	console.log("rpc:", args);
+	// Add request-object
+	if (body.method && body.method.match(/^req_/)) {
+		args.splice(1, 0, req);
+	}
+	n.rpc.apply(n, args);
+}
+
 exports.init = function(node, app_config, main, host_info) {
 	if (typeof app_config !== "object") {
 		app_config = {};
@@ -63,6 +98,10 @@ exports.init = function(node, app_config, main, host_info) {
 		if (!n.metadata) {
 			throw new HTTPError(404, "Node not found");
 		}
+		if (typeof req.query.action === "string" ||
+				typeof req.query.method === "string") {
+			return action(n, req.query, res);
+		}
 		res.set('Content-Type', 'application/json');
 		res.send(
 			JSON.stringify(n)
@@ -94,38 +133,7 @@ exports.init = function(node, app_config, main, host_info) {
 				body === null) {
 			throw new HTTPError(422, "No JSON body");
 		}
-		let args = [];
-		if (typeof body.action === "string") {
-			args = map_action(body.action);
-		} else {
-			if (typeof body.method !== "string") {
-				throw new HTTPError(400, "Missing property action or method");
-			}
-			if (Array.isArray(body.arguments)) {
-				args = body.arguments;
-			}
-			args.unshift(body.method);
-		}
-		args.push(function(err) {
-			var data = Array.prototype.slice.call(
-				arguments, 1);
-			console.log("REST Answer", err, data);
-			if (err) {
-				res.status(500);
-				data = {
-					"error": err,
-					"data": data
-				};
-			}
-			res.set('Content-Type', 'application/json');
-			res.send(JSON.stringify(data)+"\n");
-		});
-		console.log("rpc:", args);
-		// Add request-object
-		if (body.method && body.method.match(/^req_/)) {
-			args.splice(1, 0, req);
-		}
-		n.rpc.apply(n, args);
+		return action(n, body, res);
 	});
 
 	var app = express();
