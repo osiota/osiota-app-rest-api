@@ -56,7 +56,7 @@ function action(node, body, res) {
 	if (body.method && body.method.match(/^req_/)) {
 		args.splice(1, 0, req);
 	}
-	n.rpc.apply(n, args);
+	node.rpc.apply(node, args);
 }
 
 exports.init = function(node, app_config, main, host_info) {
