@@ -86,7 +86,7 @@ exports.init = function(node, app_config, main, host_info) {
 		});
 	});
 
-	router.get('/*', function(req, res) {
+	router.get('*', function(req, res) {
 		var path = req.path;
 		try {
 			path = decodeURIComponent(path);
@@ -108,7 +108,7 @@ exports.init = function(node, app_config, main, host_info) {
 			+"\n"
 		);
 	});
-	router.post('/*', function(req, res) {
+	router.post('*', function(req, res) {
 		var path = req.path;
 		var rpc_method = null;
 		try {
